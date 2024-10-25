@@ -15,13 +15,13 @@ if [ ! -d "$ruta" ]; then
     exit 1
 fi
 
-# Recorrer todos los archivos
-echo "Buscando archivos en '$ruta' con permisos '$permisos':"
+# Recorrer todos los archivos y directorios en la ruta especificada
+echo "Buscando archivos y directorios en '$ruta' con permisos '$permisos':"
 
 for archivo in "$ruta"/*; do
-    if [ -f "$archivo" ]; then
+    if [ -f "$archivo" ] || [ -d "$archivo" ]; then
         # Obtener los permisos
-        permisos_archivo=$(ls -l "$archivo" | awk '{print $1}')
+        permisos_archivo=$(ls -ld "$archivo" | awk '{print $1}')
         # Comparar los permisos
         if [ "$permisos_archivo" = "$permisos" ]; then
             echo "$archivo"
@@ -29,4 +29,4 @@ for archivo in "$ruta"/*; do
     fi
 done
 
-echo "Búsqueda completada."
+echo "Busqueda completada."
